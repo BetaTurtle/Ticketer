@@ -22,7 +22,7 @@ except KeyError:
     logging.error("Bot credentials not found in environment")
 
 # How long the container exist
-LIFESPAN = 60
+LIFESPAN = 3600
 
 
 def main():
