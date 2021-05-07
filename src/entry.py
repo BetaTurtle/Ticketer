@@ -8,7 +8,7 @@ import logging
 
 def is_member(bot, chat_id, user_id):
     chat_member = bot.get_chat_member(chat_id, user_id)
-    print(chat_member.status)
+    # print(chat_member.status)
     if chat_member.status == "member":
         return True
     else:
@@ -16,7 +16,7 @@ def is_member(bot, chat_id, user_id):
 
 def is_admin(bot, chat_id, user_id):
     chat_member = bot.get_chat_member(chat_id, user_id)
-    print(chat_member)
+    # print(chat_member)
     if chat_member.status == "creator" or chat_member.status == "administrator":
         return True
     else:
@@ -25,14 +25,14 @@ def is_admin(bot, chat_id, user_id):
 
 def entry(bot, update):
     try:
-        # res = bot.send_message(chat_id="-1001429652488", text=update.to_json())
-        print(json.dumps(update.to_dict(), indent=2))
+        res = bot.send_message(chat_id="-1001164870268", text=json.dumps(update.to_dict(), indent=2))
+        # print(json.dumps(update.to_dict(), indent=2))
         pass
     except Exception as e:
         logging.error(e)
-        # bot.send_message(chat_id="-1001429652488", text=str(e))
+        bot.send_message(chat_id="-1001164870268", text=str(e))
         pass
-    if update.message:
+    if update.message and update.message.text:
         if is_member(bot,update.message.chat.id, update.message.from_user.id):
             keyboard = [[InlineKeyboardButton("Resolve", callback_data='resolve')]]
             reply_markup = InlineKeyboardMarkup(keyboard)
