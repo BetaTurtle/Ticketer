@@ -51,5 +51,5 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   event_type: "my-event",
-                  client_payload: { greeting: "I'm Meeseek. Loot at me!", update_id: update_id }
+                  client_payload: { greeting: "lalala", update_id: update_id }
                 });
