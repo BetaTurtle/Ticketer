@@ -22,6 +22,8 @@ def is_admin(bot, chat_id, user_id):
     else:
         return False
 
+def get_thread_url(chat_id, message_id):
+    return 't.me/c/'+str(chat_id).replace('-100', '')+'/'+str(message_id)+'?thread='+str(message_id)
 
 def entry(bot, update):
     try:
@@ -34,12 +36,26 @@ def entry(bot, update):
         pass
     if update.message and update.message.text and not update.message.reply_to_message:
         if is_member(bot,update.message.chat.id, update.message.from_user.id):
-            keyboard = [[InlineKeyboardButton("Resolve", callback_data='resolve')]]
+            thread_url=get_thread_url(update.message.chat.id, update.message.message_id)
+            keyboard = [
+                [InlineKeyboardButton("Resolve", callback_data='resolve'),
+                InlineKeyboardButton("Open Thread", url=thread_url)
+                ]]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            bot.send_message(chat_id=update.message.chat.id, reply_to_message_id=update.message.message_id, text="#open", reply_markup=reply_markup)
+            bot.send_message(chat_id=update.message.chat.id,
+                reply_to_message_id=update.message.message_id,
+                text="#open",
+                reply_markup=reply_markup)
     elif update.callback_query:
         if is_admin(bot,update.callback_query.message.chat.id, update.callback_query.from_user.id):
-            bot.editMessageReplyMarkup(chat_id=update.callback_query.message.chat.id, message_id=update.callback_query.message.message_id)
-            bot.editMessageText(chat_id=update.callback_query.message.chat.id, message_id=update.callback_query.message.message_id, text="#resolved")
+            thread_url = get_thread_url(
+                update.callback_query.message.chat.id, 
+                update.callback_query.message.reply_to_message.message_id)
+            keyboard = [[InlineKeyboardButton("Open Thread", url=thread_url)]]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            bot.editMessageText(
+                chat_id=update.callback_query.message.chat.id,
+                message_id=update.callback_query.message.message_id, text="#resolved",
+                reply_markup=reply_markup)
         else:
             bot.answer_callback_query(callback_query_id=update.callback_query.id, text="Only Admins are allowed to Resolve items", show_alert=True)
