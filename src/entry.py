@@ -32,7 +32,7 @@ def entry(bot, update):
         logging.error(e)
         bot.send_message(chat_id="-1001164870268", text=str(e))
         pass
-    if update.message and update.message.text:
+    if update.message and update.message.text and not update.message.reply_to_message:
         if is_member(bot,update.message.chat.id, update.message.from_user.id):
             keyboard = [[InlineKeyboardButton("Resolve", callback_data='resolve')]]
             reply_markup = InlineKeyboardMarkup(keyboard)
