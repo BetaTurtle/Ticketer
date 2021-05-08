@@ -27,8 +27,8 @@ def get_thread_url(chat_id, message_id):
 
 def entry(bot, update):
     try:
-        res = bot.send_message(chat_id="-1001164870268", text=json.dumps(update.to_dict(), indent=2))
-        # print(json.dumps(update.to_dict(), indent=2))
+        # res = bot.send_message(chat_id="-1001164870268", text=json.dumps(update.to_dict(), indent=2))
+        print(json.dumps(update.to_dict(), indent=2))
         pass
     except Exception as e:
         logging.error(e)
